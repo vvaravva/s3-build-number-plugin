@@ -1,6 +1,6 @@
 {
   "name": "s3-build-number-plugin",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Get and save the build number on s3",
   "main": "index.js",
   "scripts": {

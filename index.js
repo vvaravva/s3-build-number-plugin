@@ -2,11 +2,13 @@ const AWS = require('aws-sdk');
 
 class S3BuildNumberPlugin {
     constructor(options) {
+        AWS.config.update(options.config);
         this.name = 'S3BuildNumberPlugin';
         this.options = options;
+        this.s3 = new AWS.S3();
         this.params = {
             Bucket: this.options.params.Bucket,
-            Key: this.options.params.Key,
+            Key: this.options.params.Key
         };
     }
 
@@ -14,31 +16,28 @@ class S3BuildNumberPlugin {
         compiler.hooks.emit.tapPromise(this.name, this.handle.bind(this));
     }
 
-    handle() {
-        this.config();
-        this.connect();
+    async handle(compilation) {
+        this.data = await this.getData();
+        this.forwardData(compilation);
+        this.prepareData();
 
-        return this.getBuildNumber();
+        return await this.updateData();
     }
 
-    config() {
-        AWS.config.update(this.options.config);
+    getData() {
+        return this.s3.getObject(this.options.params).promise();
     }
 
-    connect() {
-        this.s3 = new AWS.S3();
+    updateData() {
+        return this.s3.putObject(this.params).promise();
     }
 
-    async getBuildNumber() {
-        let data = await this.s3.getObject(this.options.params).promise();
-        let num = process.env[this.options.var] = data.Body.toString('UTF-8');
-
-        return this.setBuildNumber(num);
+    forwardData(compilation) {
+        this.num = compilation[this.options.var] = this.data.Body.toString('UTF-8');
     }
 
-    async setBuildNumber(num) {
-        this.params.Body = new Buffer(`${num ? ++num : 0}`)
-        await this.s3.putObject(this.params).promise();
+    prepareData() {
+        this.params.Body = new Buffer(`${this.num ? ++this.num : 0}`);
     }
 }
 
