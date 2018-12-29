@@ -38,7 +38,7 @@ class S3BuildNumberPlugin {
 
     async setBuildNumber(num) {
         this.params.Body = new Buffer(`${num ? ++num : 0}`)
-        await s3.putObject(this.params).promise();
+        await this.s3.putObject(this.params).promise();
     }
 }
 
