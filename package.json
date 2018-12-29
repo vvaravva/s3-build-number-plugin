@@ -1,0 +1,29 @@
+{
+  "name": "s3-build-number-plugin",
+  "version": "0.0.1",
+  "description": "Get and save the build number on s3",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Acid-base/s3-build-number-plugin.git"
+  },
+  "keywords": [
+    "s3",
+    "s3 build number"
+  ],
+  "author": "Vladimir Varavva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Acid-base/s3-build-number-plugin/issues"
+  },
+  "homepage": "https://github.com/Acid-base/s3-build-number-plugin#readme",
+  "peerDependencies": {
+    "webpack": "4"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.382.0"
+  }
+}
