@@ -17,7 +17,14 @@ class S3BuildNumberPlugin {
     }
 
     async handle(compilation) {
-        this.data = await this.getData();
+        try {
+            this.data = await this.getData();
+        } catch (e) {
+            this.prepareData();
+            await this.updateData();
+            this.data = await this.getData();
+        }
+
         this.forwardData(compilation);
         this.prepareData();
 
