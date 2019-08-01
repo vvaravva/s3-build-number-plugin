@@ -1,5 +1,3 @@
-# NOT READY!
-
 # S3 Build Number Plugin
 
 Webpack plugin for get and set the build number on s3.
